@@ -8,6 +8,7 @@ const ChatInput = ({ onSend, hasMessages }) => {
         const file = e.target.files[0];
         if (!file) return;
         setFile(file);
+        console.log("uploaded file")
         setPrompt(`Uploaded file : ${file.name}.`);
     };
 

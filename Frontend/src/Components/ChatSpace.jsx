@@ -6,10 +6,10 @@ import ChatInput from "./ChatInput";
 const ChatSpace = () => {
   const [messages, setMessages] = useState([]);
 
-  const getGeminiResponse = async(query, headers) => {
+  const getGeminiResponse = async(payload) => {
     try {
-      const res = await axios.post("http://localhost:8080/prompt/gemini", query, {...headers, withCredentials: true})
-      const aiMsg = { sender : "Gemini", text : res.data}
+      const res = await axios.post("http://localhost:5000/prompt/gemini", payload, {withCredentials: true})
+      const aiMsg = { sender : "Gemini", text : res.data.message}
       setMessages((prev) => [...prev, aiMsg]);
     } catch (error) {
       console.error("Error fetching response", error);
@@ -29,7 +29,6 @@ const ChatSpace = () => {
       };
       payload = new FormData();
       payload.append("Prompt", prompt);
-      headers = { headers: { "Content-Type": "application/json" } };
     } else {
       newMsg = {
         sender : "you",
@@ -38,7 +37,6 @@ const ChatSpace = () => {
       payload = new FormData();
       payload.append("Prompt", prompt)
       payload.append("File", file);
-      headers = { headers: { "Content-Type": "multipart/form-data" } };
     }
     
     setMessages((prev) => [...prev, newMsg]);
